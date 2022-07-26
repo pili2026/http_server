@@ -7,9 +7,9 @@ import (
 )
 
 func AddUserRouter(r *gin.RouterGroup) {
-	user := r.Group("/users")
+	user := r.Group("/user")
 
-	user.GET("/", service.GetUsers)
+	user.GET("/all", service.GetUsers)
 	user.GET("/:id", service.GetUserById)
 	user.POST("/", service.PostUser)
 	user.PUT("/:id", service.UpdateUser)

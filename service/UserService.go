@@ -17,10 +17,11 @@ func GetUsers(ctx *gin.Context) {
 
 // GET user by id
 func GetUserById(ctx *gin.Context) {
-	user := model.GetUserById(ctx.Param("id"))
+	IdParam := ctx.Param("id")
+	user := model.GetUserById(IdParam)
 
-	if user.Id == 0 {
-		ctx.JSON(http.StatusNotFound, "Not Found")
+	if user.Id.String() != IdParam {
+		ctx.JSON(http.StatusNotFound, "User not found")
 		return
 	}
 	log.Println("User->", user)
@@ -43,6 +44,7 @@ func PostUser(ctx *gin.Context) {
 // PUT
 func UpdateUser(ctx *gin.Context) {
 	user := schema.User{}
+	IdParam := ctx.Param("id")
 	err := ctx.BindJSON(&user)
 
 	if err != nil {
@@ -50,9 +52,9 @@ func UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	user = model.UpdateUser(ctx.Param("id"), user)
+	userResult := model.UpdateUser(IdParam, user)
 
-	if user.Id == 0 {
+	if !userResult {
 		ctx.JSON(http.StatusNotFound, "Can't update user due to not found")
 		log.Println("Can't update user due to not found")
 		return
