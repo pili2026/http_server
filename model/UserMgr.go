@@ -3,6 +3,8 @@ package model
 import (
 	"booking_system/database"
 	"booking_system/model/schema"
+
+	"github.com/google/uuid"
 )
 
 func GetUsers() []schema.User {
@@ -18,6 +20,8 @@ func GetUserById(userId string) schema.User {
 }
 
 func CreateUser(user schema.User) schema.User {
+	id := uuid.NewSHA1(uuid.NameSpaceDNS, []byte(user.Email))
+	user.Id = id
 	database.DbConnect.Create(&user)
 	return user
 }
@@ -29,7 +33,14 @@ func DeleteUser(userId string) bool {
 	return result.RowsAffected != 0
 }
 
-func UpdateUser(userId string, user schema.User) schema.User {
-	database.DbConnect.Model(&user).Where("id = ?", userId).Updates(user)
+func UpdateUser(userId string, user schema.User) bool {
+	result := database.DbConnect.Model(&user).Where("id = ?", userId).Updates(user)
+	return result.RowsAffected != 0
+
+}
+
+func CheckUserPassword(account string, password string) schema.User {
+	user := schema.User{}
+	database.DbConnect.Where("account = ? and password = ?", account, password).First(&user)
 	return user
 }

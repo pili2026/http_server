@@ -20,6 +20,12 @@ func main() {
 	setupLogFile()
 
 	ginSetting := gin.Default()
+
+	// TODO: Validator for registered passwords if required
+	// if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+	// 	v.RegisterValidation("password", middleware.UserPw)
+	// }
+
 	ginSetting.Use(gin.Recovery(), middleware.Logger())
 
 	v1 := ginSetting.Group("/v1")
