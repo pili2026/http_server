@@ -2,6 +2,7 @@ package router
 
 import (
 	session "booking_system/middleware"
+	"booking_system/model/schema"
 	"booking_system/service"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +11,8 @@ import (
 func AddUserRouter(r *gin.RouterGroup) {
 	user := r.Group("/user", session.SetSession())
 
-	user.GET("/all", service.GetUsers)
-	user.GET("/:id", service.GetUserById)
+	user.GET("/all", service.CacheUsersDecorator(service.RedisUsers, "users", schema.User{}))
+	user.GET("/:id", service.CacheUserDecorator(service.RedisUser, "id", "user_%s", schema.User{}))
 	user.POST("/", service.PostUser)
 	user.PUT("/:id", service.UpdateUser)
 	user.DELETE("/:id", service.DeleteUser)

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"booking_system/database"
 	"booking_system/middleware"
 	"booking_system/model"
 	"booking_system/model/schema"
@@ -118,4 +119,20 @@ func CheckUserSession(ctx *gin.Context) {
 		"message":      "Session checked",
 		"user session": middleware.GetSession(ctx),
 	})
+}
+
+func RedisUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+	user := schema.User{}
+
+	// FIXME: Find function need fix it.
+	// database.DbConnect.Find(&user, id)
+	database.DbConnect.Where("id = ?", id).First(&user)
+	ctx.Set("dbResult", user)
+}
+
+func RedisUsers(ctx *gin.Context) {
+	users := []schema.User{}
+	database.DbConnect.Find(&users)
+	ctx.Set("dbUsers", users)
 }
