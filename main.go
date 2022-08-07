@@ -31,9 +31,9 @@ func main() {
 	v1 := ginSetting.Group("/v1")
 	router.AddUserRouter(v1)
 
-	go func() {
-		database.Db()
-	}()
+	database.Db()
+	database.MongoDb()
+	defer database.MongoDisconnect()
 
 	ginSetting.Run(":8000")
 }

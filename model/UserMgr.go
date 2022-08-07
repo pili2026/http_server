@@ -1,10 +1,10 @@
 package model
 
 import (
+	"github.com/google/uuid"
+
 	"booking_system/database"
 	"booking_system/model/schema"
-
-	"github.com/google/uuid"
 )
 
 func GetUsers() []schema.User {

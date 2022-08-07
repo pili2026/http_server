@@ -1,14 +1,15 @@
 package service
 
 import (
-	"booking_system/database"
-	"booking_system/middleware"
-	"booking_system/model"
-	"booking_system/model/schema"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"booking_system/database"
+	"booking_system/middleware"
+	"booking_system/model"
+	"booking_system/model/schema"
 )
 
 // GET all user
